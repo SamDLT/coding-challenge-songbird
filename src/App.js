@@ -4,11 +4,11 @@ import Fetch from './Fetch/fetch.js';
 import {DevicesContainer} from './Device/device.js';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import CircularProgress from 'material-ui/CircularProgress';
-
-import DeviceDetails from './DeviceDetails/deviceDetails.js'
+import DeviceDetails from './DeviceDetails/deviceDetails.js';
+import {serverURL} from './constants.json';
 
 const App = () => {
-  const url = 'http://localhost:8080/devices';
+  const url = serverURL + '/devices';
 
   return (
     <MuiThemeProvider>

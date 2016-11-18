@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import {store$} from '../redux.js';
+import Fetch from '../Fetch/fetch.js';
+import CircularProgress from 'material-ui/CircularProgress';
+import {serverURL} from '../constants.json';
 
 class DeviceDetails extends Component {
 
@@ -16,6 +19,7 @@ class DeviceDetails extends Component {
 
   render() {
     const {name, id} = this.state;
+    const url = serverURL + '/devices/'+id+'/readings';
     return (
       <Card>
         <CardHeader
@@ -24,8 +28,15 @@ class DeviceDetails extends Component {
         <CardTitle title={name} />
         <CardText>
           {
+
             id ?
-              <span>We have data</span> :
+              <Fetch url={url}>
+              {
+                ({ data: readings }) =>
+                  readings ? (<span>We have data</span>) :
+                    (<CircularProgress className="progress-center-within-left-panel"/>)
+              }
+              </Fetch> :
               <span>Click on a device to the left to display more Information.</span>
           }
         </CardText>
