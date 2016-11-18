@@ -6,7 +6,7 @@ import { scan } from 'rxjs/operator/scan';
 const action$ = new Subject();
 
 // Initial State
-const initState = { selectedDevice: null };
+const initState = { };
 
 // Redux reducer
 const reducer = (state, action) => {
@@ -29,7 +29,6 @@ export const store$ = action$
 const actionDispatcher = (func) => (...args) =>
   action$.next(func(...args));
 
-// Example action function
 export const selectDevice = actionDispatcher((payload) => ({
   type: 'DEVICE_SELECTED',
   payload
