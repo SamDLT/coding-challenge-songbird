@@ -1,4 +1,6 @@
 import React from 'react';
+import { VictoryLine, VictoryChart } from 'victory';
+
 import './metricsContainer.css';
 
 import {Tabs, Tab} from 'material-ui/Tabs';
@@ -13,13 +15,37 @@ const getMin = (collection) => Math.min(...collection);
 
 export const MetricsContainer = ({readings}) => {
   const metrics = getMetrics(readings);
+  const temps = filterReadingsByType(readings, 'temperature');
+  const hum = filterReadingsByType(readings, 'humidity');
   return (
     <Tabs>
       <Tab label="Temperature" >
         <MetricDisplay measure={metrics.temperature} />
+        {
+          temps.length ?
+          <div className="chart-container">
+            <VictoryChart>
+              <VictoryLine
+                data={temps}
+                y={(datum) => datum.value}
+              />
+            </VictoryChart>
+          </div> : null
+        }
       </Tab>
       <Tab label="Humidity" >
         <MetricDisplay measure={metrics.humidity} />
+        {
+          hum.length ?
+          <div className="chart-container">
+            <VictoryChart>
+              <VictoryLine
+                data={hum}
+                y={(datum) => datum.value}
+              />
+            </VictoryChart>
+          </div> : null
+        }
       </Tab>
     </Tabs>
   )
