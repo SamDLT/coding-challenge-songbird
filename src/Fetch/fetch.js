@@ -8,7 +8,6 @@ export default class Fetch extends React.Component{
   shouldFetchData = true;
 
   fetchData() {
-    console.log(this.props.url);
     fetch(this.props.url, this.props.options || {})
     .then(res => res.json()).then(data => {
       this.shouldFetchData = false;

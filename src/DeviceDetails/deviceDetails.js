@@ -6,6 +6,8 @@ import Fetch from '../Fetch/fetch.js';
 import CircularProgress from 'material-ui/CircularProgress';
 import {serverURL} from '../constants.json';
 
+import {MetricsContainer} from './metricsContainer.js';
+
 class DeviceDetails extends Component {
 
   state = {
@@ -30,11 +32,9 @@ class DeviceDetails extends Component {
             id ?
               <Fetch url={serverURL + '/devices/'+id+'/readings'}>
               {
-                ({ data: readings }) => {
-                  console.log(readings)
-                  return readings ? (<span>We have data. {id}</span>) :
+                ({ data: readings }) =>
+                  readings ? <MetricsContainer readings={readings}/> :
                     (<CircularProgress className="progress-center-within-left-panel"/>)
-                }
               }
               </Fetch> :
               <span>Click on a device to the left to display more Information.</span>

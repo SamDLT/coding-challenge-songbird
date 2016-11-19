@@ -16,10 +16,9 @@ const App = () => {
         <div className="display-inline-block left-panel">
           <Fetch url={url}>
             {
-              ({ data: devices }) => {
-                return devices ? (<DevicesContainer devices={devices} />) :
+              ({ data: devices }) =>
+                devices ? (<DevicesContainer devices={devices} />) :
                   (<CircularProgress className="progress-center-within-left-panel"/>)
-              }
             }
           </Fetch>
         </div>
