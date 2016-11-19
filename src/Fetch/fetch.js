@@ -4,7 +4,7 @@ export default class Fetch extends React.Component{
 
   state = {data: null}
 
-  componentDidMount() {
+  fetchData() {
     fetch(this.props.url, this.props.options || {})
     .then(res => res.json()).then(data => {
       this.setState({data: data});
@@ -12,6 +12,14 @@ export default class Fetch extends React.Component{
     .catch(error => {
       console.log(error);
     })
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  componentWillReceiveProps() {
+    this.fetchData();
   }
 
   render() {

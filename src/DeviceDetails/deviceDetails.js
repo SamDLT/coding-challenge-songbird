@@ -19,7 +19,6 @@ class DeviceDetails extends Component {
 
   render() {
     const {name, id} = this.state;
-    const url = serverURL + '/devices/'+id+'/readings';
     return (
       <Card>
         <CardHeader
@@ -28,13 +27,13 @@ class DeviceDetails extends Component {
         <CardTitle title={name} />
         <CardText>
           {
-
             id ?
-              <Fetch url={url}>
+              <Fetch url={serverURL + '/devices/'+id+'/readings'}>
               {
-                ({ data: readings }) =>
-                  readings ? (<span>We have data</span>) :
+                ({ data: readings }) =>{
+                  return readings ? (<span>We have data. {id}</span>) :
                     (<CircularProgress className="progress-center-within-left-panel"/>)
+                }
               }
               </Fetch> :
               <span>Click on a device to the left to display more Information.</span>
