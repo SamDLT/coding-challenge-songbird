@@ -30,7 +30,8 @@ class DeviceDetails extends Component {
             id ?
               <Fetch url={serverURL + '/devices/'+id+'/readings'}>
               {
-                ({ data: readings }) =>{
+                ({ data: readings }) => {
+                  console.log(readings)
                   return readings ? (<span>We have data. {id}</span>) :
                     (<CircularProgress className="progress-center-within-left-panel"/>)
                 }
