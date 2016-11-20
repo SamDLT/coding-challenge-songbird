@@ -7,6 +7,7 @@ import Dialog from 'material-ui/Dialog';
 import Divider from 'material-ui/Divider';
 import TextField from 'material-ui/TextField';
 import { selectDevice } from '../redux.js';
+import {serverURL} from '../constants.json';
 
 export class DevicesContainer extends Component  {
   state = {
@@ -24,15 +25,25 @@ export class DevicesContainer extends Component  {
 
   handleChange = (event) => {
     this.setState({
-      value: event.target.value,
+      addDeviceValue: event.target.value,
     });
   };
 
   submitDevice() {
     const {updateDevices} = this.props;
-    debugger;
-    updateDevices();
-    this.handleClose();
+    console.log(this.state.addDeviceValue);
+    if(this.state.addDeviceValue)
+      fetch(serverURL + "/devices", {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({name: this.state.addDeviceValue})
+      }).then((res) =>  {
+        updateDevices();
+        this.handleClose();
+      });
   }
 
   render() {
@@ -84,7 +95,7 @@ export class DevicesContainer extends Component  {
               <TextField
                 hintText="Device Name"
                 errorText="This field is required"
-                value={this.state.value}
+                value={this.state.addDeviceValue}
                 onChange={this.handleChange}
               />
             </Dialog>
