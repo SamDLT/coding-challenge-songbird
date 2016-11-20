@@ -7,7 +7,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import DeviceDetails from './DeviceDetails/deviceDetails.js';
 import {serverURL} from './constants.json';
 
-const App = () => {
+const App = ({devices}) =>{
   const url = serverURL + '/devices';
 
   return (
@@ -16,8 +16,8 @@ const App = () => {
         <div className="display-inline-block left-panel">
           <Fetch url={url}>
             {
-              ({ data: devices }) =>
-                devices ? (<DevicesContainer devices={devices} />) :
+              ({ data: devices }, update) =>
+                devices ? (<DevicesContainer devices={devices} updateDevices={update}/>) :
                   (<CircularProgress className="progress-center-within-left-panel"/>)
             }
           </Fetch>

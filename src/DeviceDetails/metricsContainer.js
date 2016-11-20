@@ -1,8 +1,6 @@
 import React from 'react';
 import { VictoryLine, VictoryChart } from 'victory';
-
 import './metricsContainer.css';
-
 import {Tabs, Tab} from 'material-ui/Tabs';
 
 const arrayOfValues = (readings) => readings.map((reading) => reading.value)

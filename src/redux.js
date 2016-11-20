@@ -33,3 +33,8 @@ export const selectDevice = actionDispatcher((payload) => ({
   type: 'DEVICE_SELECTED',
   payload
 }));
+
+export const addedDevice = actionDispatcher(() => ({
+  type: 'DEVICE_ADDED',
+  seed: Math.random()
+}));

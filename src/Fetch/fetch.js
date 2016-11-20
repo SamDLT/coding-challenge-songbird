@@ -1,5 +1,4 @@
 import React from 'react';
-
 import isEqual from 'lodash.isequal';
 
 export default class Fetch extends React.Component{
@@ -40,7 +39,11 @@ export default class Fetch extends React.Component{
     return true;
   }
 
+  update() {
+    this.forceUpdate();
+  }
+
   render() {
-    return this.props.children(this.state);
+    return this.props.children(this.state, () => this.update());
   }
 }
