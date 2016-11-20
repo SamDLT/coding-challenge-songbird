@@ -43,6 +43,29 @@ class DeviceDetails extends Component {
     });
   }
 
+  submitReading() {
+    console.log('hello');
+    const readings = this.readingsDialog.getValues();
+    console.log(readings);
+    if(readings.type && readings.value && !isNaN(Number(readings.value))) {
+      const body = {type: readings.type, value: readings.value, deviceId: this.state.id};
+      if(readings.createdAt)
+        body.createdAt =  readings.createdAt;
+
+      fetch(serverURL + "/readings", {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      }).then((res) =>  {
+        this.fetchComponent.update();
+        this.closeReadingDialog();
+      });
+    }
+  }
+
   render() {
     const {name, id} = this.state;
 
@@ -56,7 +79,7 @@ class DeviceDetails extends Component {
             label="Submit"
             primary={true}
             keyboardFocused={true}
-            onTouchTap={this.closeReadingDialog}
+            onTouchTap={() => this.submitReading()}
           />,
         ];
 
@@ -69,7 +92,7 @@ class DeviceDetails extends Component {
         <CardText>
           {
             id ?
-              <Fetch url={serverURL + '/devices/'+id+'/readings'}>
+              <Fetch url={serverURL + '/devices/'+id+'/readings'} ref={(comp) => { this.fetchComponent = comp; }}>
               {
                 ({ data: readings }) =>
                   readings ? <MetricsContainer readings={readings}/> :
@@ -94,7 +117,7 @@ class DeviceDetails extends Component {
           open={this.state.open}
           onRequestClose={this.closeReadingDialog}
         >
-          <AddReadingsDialog />
+          <AddReadingsDialog ref={(comp) => { this.readingsDialog = comp; }}/>
         </Dialog>
       </Card>
     )
@@ -115,8 +138,9 @@ class AddReadingsDialog extends Component {
     this.setState({
       createdAt: date,
     });
-    console.log(this.state);
   };
+
+  getValues = () => { return this.state; }
 
   render() {
     return (
