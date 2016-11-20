@@ -7,3 +7,9 @@
   font-size: 1.5em;
   margin-top: 1em;
 }
+
+.single-data-point {
+  display: block;
+  margin-top: 2em;
+  text-align: center;
+}

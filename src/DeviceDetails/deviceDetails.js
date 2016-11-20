@@ -4,6 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import {store$} from '../redux.js';
 import Fetch from '../Fetch/fetch.js';
 import CircularProgress from 'material-ui/CircularProgress';
+import Dialog from 'material-ui/Dialog';
 import {serverURL} from '../constants.json';
 
 import {MetricsContainer} from './metricsContainer.js';
@@ -11,8 +12,17 @@ import {MetricsContainer} from './metricsContainer.js';
 class DeviceDetails extends Component {
 
   state = {
-    name: 'No device selected'
+    name: 'No device selected',
+    open: false
   }
+
+  openReadingDialog() {
+    this.setState({open: true});
+  }
+
+  closeReadingDialog = () => {
+    this.setState({open: false});
+  };
 
   componentWillMount() {
     store$.subscribe((state) =>
@@ -26,12 +36,26 @@ class DeviceDetails extends Component {
     }).then((res) =>  {
       update();
       this.setState({name: 'No device selected', id: null});
-      console.log(this.state);
     });
   }
 
   render() {
     const {name, id} = this.state;
+
+    const actions = [
+          <FlatButton
+            label="Cancel"
+            primary={true}
+            onTouchTap={this.closeReadingDialog}
+          />,
+          <FlatButton
+            label="Submit"
+            primary={true}
+            keyboardFocused={true}
+            onTouchTap={this.closeReadingDialog}
+          />,
+        ];
+
     return (
       <Card>
         <CardHeader
@@ -54,11 +78,20 @@ class DeviceDetails extends Component {
         <CardActions>
           {
             id && <div>
-                    <FlatButton label="Add Reading" />
+                    <FlatButton label="Add Reading" onClick={() => this.openReadingDialog()}/>
                     <FlatButton label="Delete Device" secondary={true} onClick={() => this.deleteDevice()}/>
                   </div>
           }
         </CardActions>
+        <Dialog
+          title="Dialog With Actions"
+          actions={actions}
+          modal={false}
+          open={this.state.open}
+          onRequestClose={this.closeReadingDialog}
+        >
+
+        </Dialog>
       </Card>
     )
   }

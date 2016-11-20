@@ -15,35 +15,21 @@ export const MetricsContainer = ({readings}) => {
   const metrics = getMetrics(readings);
   const temps = filterReadingsByType(readings, 'temperature');
   const hum = filterReadingsByType(readings, 'humidity');
+  const airquality = filterReadingsByType(readings, 'airquality');
+
   return (
     <Tabs>
       <Tab label="Temperature" >
         <MetricDisplay measure={metrics.temperature} />
-        {
-          temps.length ?
-          <div className="chart-container">
-            <VictoryChart>
-              <VictoryLine
-                data={temps}
-                y={(datum) => datum.value}
-              />
-            </VictoryChart>
-          </div> : null
-        }
+        <ChartDisplay readings={temps} />
       </Tab>
       <Tab label="Humidity" >
         <MetricDisplay measure={metrics.humidity} />
-        {
-          hum.length ?
-          <div className="chart-container">
-            <VictoryChart>
-              <VictoryLine
-                data={hum}
-                y={(datum) => datum.value}
-              />
-            </VictoryChart>
-          </div> : null
-        }
+        <ChartDisplay readings={hum} />
+      </Tab>
+      <Tab label="Air Quality" >
+        <MetricDisplay measure={metrics.airquality} />
+        <ChartDisplay readings={airquality} />
       </Tab>
     </Tabs>
   )
@@ -65,6 +51,26 @@ const MetricDisplay = ({ measure }) => {
   )
 }
 
+const ChartDisplay = ({readings}) => {
+  return (
+    <div>
+      {
+        readings.length > 1 ?
+        <div className="chart-container">
+          <VictoryChart>
+            <VictoryLine
+              data={readings}
+              y={(datum) => datum.value}
+            />
+          </VictoryChart>
+        </div> : readings.length === 1 ?
+          <span className="single-data-point">Only one data point. Two data points required to render chart.</span> :
+          null
+      }
+    </div>
+  )
+}
+
 function getCalculations(readings) {
   return {
     average: getAverage(readings),
@@ -76,6 +82,7 @@ function getCalculations(readings) {
 function getMetrics(readings) {
   const temperatureReadings = arrayOfValues(filterReadingsByType(readings, 'temperature'));
   const humidityReadings = arrayOfValues(filterReadingsByType(readings, 'humidity'));
+  const airQualityReadings = arrayOfValues(filterReadingsByType(readings, 'airquality'));
 
   const temperatureMetrics = temperatureReadings.length ? {
     temperature: getCalculations(temperatureReadings)
@@ -85,5 +92,9 @@ function getMetrics(readings) {
     humidity: getCalculations(humidityReadings)
   } : {};
 
-  return Object.assign({}, temperatureMetrics, humidityMetrics);
+  const airQualityMetrics = airQualityReadings.length ? {
+    airquality: getCalculations(airQualityReadings)
+  } : {};
+
+  return Object.assign({}, temperatureMetrics, humidityMetrics, airQualityMetrics);
 }
