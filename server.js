@@ -5,7 +5,7 @@ const request = require('request');
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(cors());
@@ -18,9 +18,23 @@ app.get('/devices/:id/readings', fetchDataFromServer);
 
 app.post('/devices', postDataToServer);
 
+app.delete('/devices/:id', deleteDataFromServer);
+
+function deleteDataFromServer(req, res) {
+  const routeWithParams = replaceParamsInRoute(req.route.path, req.params);
+  request.delete(serverURL+routeWithParams, (error, response, body) => {
+    if (!error && response.statusCode == 204) {
+      res.setHeader('Content-Type', 'application/json');
+      res.json(body);
+    }
+    else {
+      console.log(error, response.statusCode, body);
+    }
+  })
+}
+
 function postDataToServer(req, res) {
   const routeWithParams = replaceParamsInRoute(req.route.path, req.params);
-  console.log(serverURL+routeWithParams);
   request.post({ url:serverURL+routeWithParams, formData: req.body}, (error, response, body) => {
     if (!error && response.statusCode == 201) {
       res.setHeader('Content-Type', 'application/json');

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import './App.css';
 import Fetch from './Fetch/fetch.js';
 import {DevicesContainer} from './Device/device.js';
@@ -7,27 +7,34 @@ import CircularProgress from 'material-ui/CircularProgress';
 import DeviceDetails from './DeviceDetails/deviceDetails.js';
 import {serverURL} from './constants.json';
 
-const App = ({devices}) =>{
-  const url = serverURL + '/devices';
+class App extends Component {
 
-  return (
-    <MuiThemeProvider>
-      <div>
-        <div className="display-inline-block left-panel">
-          <Fetch url={url}>
-            {
-              ({ data: devices }, update) =>
-                devices ? (<DevicesContainer devices={devices} updateDevices={update}/>) :
-                  (<CircularProgress className="progress-center-within-left-panel"/>)
-            }
-          </Fetch>
+  updateDevices() {
+    this.fetchComponent.update();
+  }
+
+  render() {
+    const url = serverURL + '/devices';
+
+    return (
+      <MuiThemeProvider>
+        <div>
+          <div className="display-inline-block left-panel">
+            <Fetch url={url} ref={(comp) => { this.fetchComponent = comp; }}>
+              {
+                ({ data: devices }, update) =>
+                  devices ? (<DevicesContainer devices={devices} updateDevices={update}/>) :
+                    (<CircularProgress className="progress-center-within-left-panel"/>)
+              }
+            </Fetch>
+          </div>
+          <div className="display-inline-block right-panel">
+            <DeviceDetails update={() => this.updateDevices()}/>
+          </div>
         </div>
-        <div className="display-inline-block right-panel">
-          <DeviceDetails />
-        </div>
-      </div>
-    </MuiThemeProvider>
-  );
+      </MuiThemeProvider>
+    );
+  }
 }
 
 export default App;

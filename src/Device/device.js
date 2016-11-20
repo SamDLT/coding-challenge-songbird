@@ -31,7 +31,6 @@ export class DevicesContainer extends Component  {
 
   submitDevice() {
     const {updateDevices} = this.props;
-    console.log(this.state.addDeviceValue);
     if(this.state.addDeviceValue)
       fetch(serverURL + "/devices", {
         method: "POST",

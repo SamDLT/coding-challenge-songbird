@@ -19,6 +19,17 @@ class DeviceDetails extends Component {
         state.selectedDevice && this.setState(state.selectedDevice));
   }
 
+  deleteDevice() {
+    const {update} = this.props;
+    fetch(serverURL + "/devices/"+this.state.id, {
+      method: "DELETE",
+    }).then((res) =>  {
+      update();
+      this.setState({name: 'No device selected', id: null});
+      console.log(this.state);
+    });
+  }
+
   render() {
     const {name, id} = this.state;
     return (
@@ -41,8 +52,12 @@ class DeviceDetails extends Component {
           }
         </CardText>
         <CardActions>
-          <FlatButton label="Action1" />
-          <FlatButton label="Action2" />
+          {
+            id && <div>
+                    <FlatButton label="Add Reading" />
+                    <FlatButton label="Delete Device" secondary={true} onClick={() => this.deleteDevice()}/>
+                  </div>
+          }
         </CardActions>
       </Card>
     )
