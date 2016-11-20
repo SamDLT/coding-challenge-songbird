@@ -5,6 +5,10 @@ import {store$} from '../redux.js';
 import Fetch from '../Fetch/fetch.js';
 import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import DatePicker from 'material-ui/DatePicker';
 import {serverURL} from '../constants.json';
 
 import {MetricsContainer} from './metricsContainer.js';
@@ -90,11 +94,58 @@ class DeviceDetails extends Component {
           open={this.state.open}
           onRequestClose={this.closeReadingDialog}
         >
-
+          <AddReadingsDialog />
         </Dialog>
       </Card>
     )
   }
 };
+
+class AddReadingsDialog extends Component {
+
+  state = {};
+
+  typeChanged = (event, index, value) => this.setState({type: value});
+  valueChanged = (event) => {
+    this.setState({
+      value: event.target.value,
+    });
+  };
+  createdAtChanged = (event, date) => {
+    this.setState({
+      createdAt: date,
+    });
+    console.log(this.state);
+  };
+
+  render() {
+    return (
+      <div>
+        <SelectField
+          floatingLabelText="Frequency"
+          errorText="This field is required"
+          value={this.state.type}
+          onChange={this.typeChanged}
+        >
+          <MenuItem value={'temperature'} primaryText="Temperature" />
+          <MenuItem value={'humidity'} primaryText="Humidity" />
+          <MenuItem value={'airquality'} primaryText="Air Quality" />
+        </SelectField>
+        <br />
+        <TextField
+          hintText="Value"
+          errorText="This field is required"
+          value={this.state.value}
+          onChange={this.valueChanged}
+        />
+        <br />
+        <DatePicker
+          hintText="Created At"
+          value={this.state.createdAt}
+          onChange={this.createdAtChanged}
+        />
+    </div>
+  )}
+}
 
 export default DeviceDetails;

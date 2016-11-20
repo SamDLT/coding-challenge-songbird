@@ -17,6 +17,7 @@ app.get('/devices/:id', fetchDataFromServer);
 app.get('/devices/:id/readings', fetchDataFromServer);
 
 app.post('/devices', postDataToServer);
+app.post('/readings', postDataToServer);
 
 app.delete('/devices/:id', deleteDataFromServer);
 
