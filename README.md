@@ -10,4 +10,4 @@ To run locally run the following commands:
 - npm start
 
 To run tests:
-npm run test
+- npm run test
