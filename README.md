@@ -2,7 +2,7 @@
 
 Requires Node.js v7.0.0 or greater.
 
-To run locally run the following commands:
+To run locally, run the following commands:
 
 - git clone https://github.com/SamDLT/coding-challenge-songbird
 - cd coding-challenge-songbird
